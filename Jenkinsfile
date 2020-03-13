@@ -1,25 +1,17 @@
 pipeline {
     agent any
     stages {
-        stage('Hello World') {
+        stage('Build') {
             steps {
-                echo 'Hello World!' 
+                sh 'docker build -t pokemon .' 
             }
         }
-        stage('Write File') {
+		stage('Run') {
             steps {
-                script {
-                    def currentDate = new Date().format( 'yyyyMMddHms' );
-                    writeFile encoding: 'UTF-8', file: 'fileToArchive.js', text: "Need to be archived $currentDate"
-                }
+                sh ' docker run -d -p 5555:5555 pokemon' 
             }
         }
-        stage('Archive File') {
-            steps {
-                archiveArtifacts '*.js'
-                sh """ls -l"""
-            }
-        }
+
     }
     post {
         always {
