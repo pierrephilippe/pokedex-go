@@ -1,21 +1,37 @@
 pipeline {
     agent any
+    
     stages {
-        stage('Build') {
+        stage("checkout") {
             steps {
-                sh 'docker build -t pokemon .' 
+                checkout scm
             }
         }
-		stage('Run') {
+        stage("build") {
             steps {
-                sh ' docker run -d -p 5555:5555 pokemon' 
+                docker.build("pokedex:${env.BUILD_ID}")
             }
         }
-
-    }
-    post {
-        always {
-            cleanWs()
+        stage("test") {
+            agent {
+                docker { image "pokedex:${env.BUILD_ID}" }
+            }
+            steps {
+                sh "npm test"
+            }
+        }
+        stage("deploy") {
+            steps {
+                sh """docker run -d pokedex:${env.BUILD_ID} -p 5555"""
+            }
         }
     }
 }
+
+
+
+
+
+
+
+
