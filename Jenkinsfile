@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage("deploy") {
             steps {
-                sh """docker run --rm -it --name pokemon -p 5555:5555 pokemon-go:latest"""
+                sh """docker run --rm --name pokemon -p 5555:5555 pokemon-go:latest"""
             }
         }
     }
