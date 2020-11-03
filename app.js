@@ -19,7 +19,7 @@ app.use(express.static('public'));
 
 // base route
 app.get('/', (req, res) => {
-	res.status(200).send('works! 💪👌💯🙌');
+	res.status(200).send('Fonctionne :-D 💪👌💯🙌');
 });
 
 app.get('/webhook', (req, res) => {
