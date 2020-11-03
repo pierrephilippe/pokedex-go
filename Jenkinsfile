@@ -9,17 +9,17 @@ pipeline {
         }
         stage("Build le projet") {
             steps {
-                sh """docker exec -ti pokemon npm build"""
+                sh """docker exec pokemon npm build"""
             }
         }
         stage("Test le projet") {
             steps {
-                sh """docker exec -ti pokemon npm test"""
+                sh """docker exec pokemon npm test"""
             }
         }
          stage("Deploie le projet") {
             steps {
-                sh """docker exec -ti pokemon npm run"""
+                sh """docker exec pokemon npm run"""
             }
         }
     }
