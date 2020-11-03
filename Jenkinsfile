@@ -2,11 +2,6 @@ pipeline {
     agent any
     
     stages {
-        stage("Arreter le docker") {
-            steps {
-                sh """docker kill pokemon"""
-            }
-        }
         stage("Démarrer la VM") {
             steps {
                 sh """docker run --rm --name pokemon -p 5555:5555 pokemon-go:latest"""
@@ -14,7 +9,17 @@ pipeline {
         }
         stage("Build le projet") {
             steps {
-                sh """docker exec -ti pokemon npm run build"""
+                sh """docker exec -ti pokemon npm build"""
+            }
+        }
+        stage("Test le projet") {
+            steps {
+                sh """docker exec -ti pokemon npm test"""
+            }
+        }
+         stage("Deploie le projet") {
+            steps {
+                sh """docker exec -ti pokemon npm run"""
             }
         }
     }
