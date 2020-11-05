@@ -2,16 +2,9 @@ pipeline {
     agent any
     
     stages {
-        stage("Récupère code") {
-            steps {
-                echo 'directory'
-                sh """ cd /vagrant/project/pokedex-go """
-            }
-        }
         stage("build docker") {
             steps {
                 sh """docker build -t "pokemon" ."""
-                sh """docker rm -f pokemon """
                 sh """docker run -d --rm --name pokemon -p 5555:5555 pokemon-go:latest"""
             }
         }
