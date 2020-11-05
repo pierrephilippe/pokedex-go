@@ -4,8 +4,8 @@ pipeline {
     stages {
         stage("Récupère code") {
             steps {
-                echo 'checkout scm'
-                checkout svm
+                echo 'directory'
+                sh """ cd /vagrant/project/pokedex-go """
             }
         }
         stage("build docker") {
