@@ -11,7 +11,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh "docker build -t pokedex-go:latest ."
+                sh "docker build -t pokedex-go:latest -t pokemon-go:1.0 ."
             }
         }
         stage('Test') {
