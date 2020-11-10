@@ -1,30 +1,41 @@
-pipeline {
+pipeline {​
     agent any
+
+    triggers {​
+        pollSCM('* * * * *')
+    }​
+
+    stages {​
+        stage('Checkout') {​
+            steps {​
+                checkout scm
+            }​
+        }​
+        stage('Build') {​
+            steps {​
+                sh "docker build -t pokedex-go:latest ."
+            }​
+        }​
+        stage('Test') {​
+            steps {​
+                sh "docker run --rm pokedex-go:latest npm test"
+            }​
+        }​
+        stage('Deploy') {​
+            steps {​
+                sh "docker rm -f pokedex-go || true"
+                sh "docker run --rm -d --name pokedex-go -p 5555:5555 pokedex-go:latest"
+            }​
+        }​
+    }​
+    post {​
+        always {​
+            cleanWs()
+        }​
+    }​
+}​
     
-    stages {
-        stage("build docker") {
-            steps {
-                sh """docker build -t "pokemon" ."""
-                sh """docker run -d --rm --name pokemon -p 5555:5555 pokemon-go:latest"""
-            }
-        }
-        stage("Test le projet") {
-            steps {
-                sh """docker exec pokemon npm test"""
-            }
-        }
-         stage("Deploie le projet") {
-            steps {
-                sh """docker exec pokemon npm run"""
-            }
-        }
-    }
-}
-
-
-
-
-
-
-
+    
+  
+  
 
